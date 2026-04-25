@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -16,632 +16,257 @@
       --amber-pale: #fef3e8;
       --red: #c0392b;
       --red-pale: #fdecea;
-      --sand: #f4f0e8;
-      --white: #ffffff;
+      --radius: 16px;
+      --bg: #f4f0e8;
+      --card: #ffffff;
       --text: #1a2e1f;
       --muted: #5a7060;
       --border: #cde4d5;
-      --radius: 16px;
+      --input-bg: #fafcfb;
+      --about-bg: #e8f7ef;
+      --shadow: 0 2px 16px rgba(30,80,50,.07);
+      --toggle-bg: rgba(255,255,255,0.15);
+      --footer-bg: #f4f0e8;
     }
-
+    [data-theme="dark"] {
+      --bg: #0f1f16; --card: #162211; --text: #d6edd9; --muted: #7aab85;
+      --border: #2a4a35; --input-bg: #1a2e1e; --about-bg: #122019;
+      --shadow: 0 2px 20px rgba(0,0,0,.35); --green-pale: #162a1e;
+      --amber-pale: #2a1e0f; --red-pale: #2a100e;
+      --toggle-bg: rgba(0,0,0,0.25); --footer-bg: #0f1f16;
+    }
     * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; transition: background .3s, color .3s; }
 
-    body {
-      font-family: 'DM Sans', sans-serif;
-      background: var(--sand);
-      color: var(--text);
-      min-height: 100vh;
+    .theme-toggle {
+      position: fixed; top: 16px; right: 16px; z-index: 1000;
+      background: var(--toggle-bg); border: 1px solid rgba(255,255,255,.2);
+      border-radius: 999px; padding: 8px 14px; cursor: pointer;
+      font-size: 13px; font-weight: 600; color: #fff;
+      display: flex; align-items: center; gap: 6px;
+      backdrop-filter: blur(8px); transition: background .2s;
+      box-shadow: 0 2px 10px rgba(0,0,0,.2);
     }
+    [data-theme="dark"] .theme-toggle { background: rgba(30,80,50,.5); border-color: var(--border); color: var(--green-light); }
+    .theme-toggle:hover { background: rgba(255,255,255,.25); }
 
-    /* ── HEADER ── */
-    header {
-      background: var(--green-deep);
-      padding: 0;
-      position: relative;
-      overflow: hidden;
-    }
-    header::before {
-      content: '';
-      position: absolute;
-      top: -80px; right: -80px;
-      width: 320px; height: 320px;
-      border-radius: 50%;
-      background: radial-gradient(circle, rgba(63,160,106,.25) 0%, transparent 70%);
-    }
-    header::after {
-      content: '';
-      position: absolute;
-      bottom: -60px; left: 10%;
-      width: 220px; height: 220px;
-      border-radius: 50%;
-      background: radial-gradient(circle, rgba(168,230,196,.12) 0%, transparent 70%);
-    }
-    .header-inner {
-      max-width: 860px;
-      margin: 0 auto;
-      padding: 48px 20px 44px;
-      position: relative;
-      z-index: 1;
-      text-align: center;
-    }
-    .header-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 7px;
-      background: rgba(168,230,196,.15);
-      border: 1px solid rgba(168,230,196,.3);
-      border-radius: 999px;
-      padding: 6px 14px;
-      font-size: 12px;
-      font-weight: 600;
-      color: var(--green-light);
-      letter-spacing: .5px;
-      text-transform: uppercase;
-      margin-bottom: 18px;
-    }
-    .header-badge span { font-size: 14px; }
-    h1 {
-      font-family: 'Merriweather', serif;
-      font-size: clamp(26px, 5vw, 40px);
-      font-weight: 900;
-      color: #fff;
-      line-height: 1.2;
-      margin-bottom: 14px;
-    }
-    h1 em {
-      font-style: normal;
-      color: var(--green-light);
-    }
-    .header-desc {
-      font-size: 15px;
-      line-height: 1.7;
-      color: rgba(255,255,255,.72);
-      max-width: 560px;
-      margin: 0 auto 22px;
-    }
-    .aim-strip {
-      display: flex;
-      justify-content: center;
-      gap: 28px;
-      flex-wrap: wrap;
-      margin-top: 22px;
-    }
-    .aim-item {
-      display: flex;
-      align-items: center;
-      gap: 7px;
-      font-size: 13px;
-      color: rgba(255,255,255,.65);
-    }
-    .aim-icon {
-      width: 28px; height: 28px;
-      background: rgba(63,160,106,.25);
-      border-radius: 8px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 14px;
-      flex-shrink: 0;
-    }
+    header { background: var(--green-deep); position: relative; overflow: hidden; }
+    header::before { content:''; position:absolute; top:-80px; right:-80px; width:320px; height:320px; border-radius:50%; background:radial-gradient(circle,rgba(63,160,106,.22) 0%,transparent 70%); }
+    .header-inner { max-width: 860px; margin: 0 auto; padding: 52px 20px 46px; position: relative; z-index: 1; text-align: center; }
+    .header-badge { display:inline-flex; align-items:center; gap:7px; background:rgba(168,230,196,.14); border:1px solid rgba(168,230,196,.28); border-radius:999px; padding:6px 15px; font-size:12px; font-weight:600; color:var(--green-light); letter-spacing:.5px; text-transform:uppercase; margin-bottom:18px; }
+    h1 { font-family:'Merriweather',serif; font-size:clamp(24px,5vw,40px); font-weight:900; color:#fff; line-height:1.2; margin-bottom:14px; }
+    h1 em { font-style:normal; color:var(--green-light); }
+    .header-desc { font-size:15px; line-height:1.7; color:rgba(255,255,255,.7); max-width:560px; margin:0 auto 22px; }
+    .aim-strip { display:flex; justify-content:center; gap:28px; flex-wrap:wrap; margin-top:22px; }
+    .aim-item { display:flex; align-items:center; gap:7px; font-size:13px; color:rgba(255,255,255,.62); }
+    .aim-icon { width:28px; height:28px; background:rgba(63,160,106,.22); border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:14px; flex-shrink:0; }
 
-    /* ── SECTION LABELS ── */
-    .section-label {
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 1.2px;
-      text-transform: uppercase;
-      color: var(--green-mid);
-      margin-bottom: 8px;
-    }
+    .about-strip { background:var(--about-bg); border-bottom:1px solid var(--border); padding:18px 20px; transition:background .3s; }
+    .about-inner { max-width:860px; margin:0 auto; display:flex; gap:24px; flex-wrap:wrap; }
+    .about-item { flex:1; min-width:200px; display:flex; gap:10px; }
+    .about-icon { font-size:22px; flex-shrink:0; margin-top:2px; }
+    .about-item h4 { font-size:13px; font-weight:600; color:var(--green-deep); margin-bottom:3px; }
+    [data-theme="dark"] .about-item h4 { color:var(--green-light); }
+    .about-item p { font-size:12px; color:var(--muted); line-height:1.55; }
 
-    /* ── ABOUT STRIP ── */
-    .about-strip {
-      background: var(--green-pale);
-      border-bottom: 1px solid var(--border);
-      padding: 18px 20px;
-    }
-    .about-inner {
-      max-width: 860px;
-      margin: 0 auto;
-      display: flex;
-      gap: 24px;
-      align-items: flex-start;
-      flex-wrap: wrap;
-    }
-    .about-item {
-      flex: 1;
-      min-width: 200px;
-      display: flex;
-      gap: 10px;
-    }
-    .about-icon {
-      font-size: 22px;
-      flex-shrink: 0;
-      margin-top: 2px;
-    }
-    .about-item h4 {
-      font-size: 13px;
-      font-weight: 600;
-      color: var(--green-deep);
-      margin-bottom: 3px;
-    }
-    .about-item p {
-      font-size: 12px;
-      color: var(--muted);
-      line-height: 1.55;
-    }
+    main { max-width:860px; margin:0 auto; padding:28px 20px 60px; }
 
-    /* ── MAIN ── */
-    main {
-      max-width: 860px;
-      margin: 0 auto;
-      padding: 28px 20px 60px;
-    }
+    .card { background:var(--card); border-radius:var(--radius); border:1px solid var(--border); padding:24px; margin-bottom:16px; box-shadow:var(--shadow); transition:background .3s, border-color .3s; }
+    .card h3 { font-family:'Merriweather',serif; font-size:17px; font-weight:700; color:var(--text); margin-bottom:6px; }
+    .card-desc { font-size:13px; color:var(--muted); margin-bottom:18px; line-height:1.55; }
+    .section-label { font-size:11px; font-weight:700; letter-spacing:1.2px; text-transform:uppercase; color:var(--green-bright); margin-bottom:8px; }
 
-    /* ── CARDS ── */
-    .card {
-      background: var(--white);
-      border-radius: var(--radius);
-      border: 1px solid var(--border);
-      padding: 24px;
-      margin-bottom: 16px;
-      box-shadow: 0 2px 16px rgba(30,80,50,.06);
-    }
-    .card h3 {
-      font-family: 'Merriweather', serif;
-      font-size: 17px;
-      font-weight: 700;
-      color: var(--green-deep);
-      margin-bottom: 6px;
-    }
-    .card-desc {
-      font-size: 13px;
-      color: var(--muted);
-      margin-bottom: 18px;
-      line-height: 1.55;
-    }
+    .service-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; }
+    @media(max-width:640px) { .service-grid { grid-template-columns:1fr; } }
+    .service-btn { border:none; border-radius:14px; padding:18px 14px; cursor:pointer; text-align:left; transition:transform .18s, box-shadow .18s, background .18s; position:relative; }
+    .service-btn:hover { transform:translateY(-3px); }
+    .service-btn .btn-icon { font-size:28px; margin-bottom:10px; display:block; }
+    .service-btn .btn-title { font-weight:700; font-size:14px; display:block; margin-bottom:5px; }
+    .service-btn .btn-hint { font-size:12px; line-height:1.5; opacity:.78; }
+    .service-btn::after { content:attr(data-tooltip); position:absolute; bottom:calc(100% + 8px); left:50%; transform:translateX(-50%) scale(.95); background:var(--green-deep); color:#fff; font-size:12px; padding:7px 12px; border-radius:8px; max-width:200px; white-space:normal; text-align:center; opacity:0; pointer-events:none; transition:opacity .18s, transform .18s; z-index:10; font-weight:400; line-height:1.4; }
+    .service-btn::before { content:''; position:absolute; bottom:calc(100% + 2px); left:50%; transform:translateX(-50%); border:5px solid transparent; border-top-color:var(--green-deep); opacity:0; pointer-events:none; transition:opacity .18s; z-index:10; }
+    .service-btn:hover::after { opacity:1; transform:translateX(-50%) scale(1); }
+    .service-btn:hover::before { opacity:1; }
+    .btn-quick { background:var(--green-pale); color:var(--green-deep); box-shadow:0 4px 14px rgba(46,107,71,.1); }
+    [data-theme="dark"] .btn-quick { color:var(--green-light); }
+    .btn-full { background:var(--green-mid); color:#fff; box-shadow:0 4px 14px rgba(46,107,71,.22); }
+    .btn-full:hover { background:var(--green-deep); }
+    .btn-emergency { background:linear-gradient(135deg,#c0392b,#e74c3c); color:#fff; box-shadow:0 4px 14px rgba(192,57,43,.28); }
 
-    /* ── SERVICE BUTTONS ── */
-    .service-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 12px;
-    }
-    @media(max-width:640px){ .service-grid { grid-template-columns: 1fr; } }
+    .form-grid { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-bottom:14px; }
+    @media(max-width:560px) { .form-grid { grid-template-columns:1fr; } }
+    .field { margin-bottom:14px; }
+    label { font-size:12px; font-weight:600; color:var(--muted); display:block; margin-bottom:5px; letter-spacing:.2px; text-transform:uppercase; }
+    input, select, textarea { width:100%; padding:11px 13px; border-radius:10px; border:1.5px solid var(--border); font-family:'DM Sans',sans-serif; font-size:14px; background:var(--input-bg); color:var(--text); outline:none; transition:border .18s, box-shadow .18s; }
+    textarea { min-height:100px; resize:vertical; }
+    input:focus, select:focus, textarea:focus { border-color:var(--green-bright); box-shadow:0 0 0 3px rgba(63,160,106,.15); }
 
-    .service-btn {
-      border: none;
-      border-radius: 14px;
-      padding: 18px 14px;
-      cursor: pointer;
-      text-align: left;
-      transition: transform .18s, box-shadow .18s, background .18s;
-      position: relative;
-      overflow: hidden;
-    }
-    .service-btn:hover { transform: translateY(-3px); }
+    .media-section { margin-top:18px; padding-top:18px; border-top:1px dashed var(--border); }
+    .media-section-title { font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:.8px; color:var(--muted); margin-bottom:12px; display:flex; align-items:center; gap:6px; }
+    .media-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+    @media(max-width:500px) { .media-grid { grid-template-columns:1fr; } }
+    .upload-zone { border:2px dashed var(--border); border-radius:12px; padding:18px 14px; text-align:center; cursor:pointer; transition:border-color .2s, background .2s; background:var(--input-bg); position:relative; }
+    .upload-zone:hover, .upload-zone.drag-over { border-color:var(--green-bright); background:var(--green-pale); }
+    .upload-zone input[type="file"] { position:absolute; inset:0; opacity:0; cursor:pointer; width:100%; height:100%; }
+    .upload-icon { font-size:26px; margin-bottom:6px; }
+    .upload-text { font-size:13px; font-weight:600; color:var(--green-mid); }
+    [data-theme="dark"] .upload-text { color:var(--green-light); }
+    .upload-sub { font-size:11px; color:var(--muted); margin-top:3px; }
+    .upload-preview { margin-top:8px; display:none; align-items:center; gap:8px; background:var(--green-pale); border-radius:8px; padding:6px 10px; font-size:12px; color:var(--green-mid); }
+    .upload-preview.show { display:flex; }
+    .preview-img { width:36px; height:36px; border-radius:6px; object-fit:cover; flex-shrink:0; }
+    .preview-name { flex:1; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .remove-file { cursor:pointer; font-size:14px; color:var(--red); flex-shrink:0; background:none; border:none; }
 
-    .service-btn .btn-icon {
-      font-size: 28px;
-      margin-bottom: 10px;
-      display: block;
-    }
-    .service-btn .btn-title {
-      font-weight: 700;
-      font-size: 14px;
-      display: block;
-      margin-bottom: 5px;
-    }
-    .service-btn .btn-hint {
-      font-size: 12px;
-      line-height: 1.5;
-      opacity: .78;
-    }
+    .voice-zone { border:2px dashed var(--border); border-radius:12px; padding:18px 14px; text-align:center; background:var(--input-bg); transition:border-color .2s, background .2s; }
+    .voice-zone.recording { border-color:var(--red); background:var(--red-pale); animation:pulse-border 1.2s ease-in-out infinite; }
+    @keyframes pulse-border { 0%,100%{box-shadow:0 0 0 0 rgba(192,57,43,.25)} 50%{box-shadow:0 0 0 6px rgba(192,57,43,0)} }
+    .voice-btn { background:var(--green-mid); color:#fff; border:none; border-radius:999px; padding:10px 18px; font-size:13px; font-weight:600; cursor:pointer; transition:background .2s; display:inline-flex; align-items:center; gap:6px; }
+    .voice-btn.stop { background:var(--red); }
+    .voice-timer { font-size:22px; font-weight:700; color:var(--red); margin:8px 0 4px; display:none; }
+    .voice-waveform { display:none; justify-content:center; align-items:center; gap:3px; height:28px; margin:6px 0; }
+    .voice-waveform.active { display:flex; }
+    .wave-bar { width:3px; border-radius:3px; background:var(--red); animation:wave-anim 1s ease-in-out infinite; }
+    .wave-bar:nth-child(1){height:8px;animation-delay:0s} .wave-bar:nth-child(2){height:18px;animation-delay:.1s} .wave-bar:nth-child(3){height:24px;animation-delay:.2s} .wave-bar:nth-child(4){height:14px;animation-delay:.3s} .wave-bar:nth-child(5){height:20px;animation-delay:.4s} .wave-bar:nth-child(6){height:10px;animation-delay:.5s} .wave-bar:nth-child(7){height:22px;animation-delay:.15s}
+    @keyframes wave-anim { 0%,100%{transform:scaleY(.5);opacity:.6} 50%{transform:scaleY(1);opacity:1} }
+    .voice-playback { display:none; margin-top:10px; background:var(--green-pale); border-radius:8px; padding:8px 12px; }
+    .voice-playback.show { display:block; }
+    .voice-playback audio { width:100%; margin-bottom:4px; }
+    .voice-actions { display:flex; gap:8px; justify-content:center; }
+    .voice-action-btn { font-size:11px; padding:5px 12px; border-radius:999px; border:none; cursor:pointer; font-weight:600; }
+    .rerecord-btn { background:var(--border); color:var(--text); }
+    .voice-sub { font-size:11px; color:var(--muted); margin-top:6px; }
 
-    /* Tooltip */
-    .service-btn::after {
-      content: attr(data-tooltip);
-      position: absolute;
-      bottom: calc(100% + 8px);
-      left: 50%;
-      transform: translateX(-50%) scale(.95);
-      background: var(--green-deep);
-      color: #fff;
-      font-size: 12px;
-      padding: 7px 12px;
-      border-radius: 8px;
-      white-space: nowrap;
-      max-width: 200px;
-      white-space: normal;
-      text-align: center;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity .18s, transform .18s;
-      z-index: 10;
-      font-weight: 400;
-      line-height: 1.4;
-    }
-    .service-btn::before {
-      content: '';
-      position: absolute;
-      bottom: calc(100% + 2px);
-      left: 50%;
-      transform: translateX(-50%);
-      border: 5px solid transparent;
-      border-top-color: var(--green-deep);
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity .18s;
-      z-index: 10;
-    }
-    .service-btn:hover::after,
-    .service-btn:hover::before { opacity: 1; transform: translateX(-50%) scale(1); }
+    .btn-row { display:flex; gap:10px; margin-top:18px; flex-wrap:wrap; }
+    .btn-submit { background:var(--green-mid); color:#fff; border:none; border-radius:999px; padding:13px 24px; font-family:'DM Sans',sans-serif; font-size:14px; font-weight:600; cursor:pointer; transition:background .18s, transform .15s; }
+    .btn-submit:hover { background:var(--green-deep); transform:translateY(-1px); }
+    .btn-submit:disabled { background:var(--muted); cursor:not-allowed; transform:none; }
+    .btn-back { background:transparent; color:var(--muted); border:1.5px solid var(--border); border-radius:999px; padding:13px 20px; font-family:'DM Sans',sans-serif; font-size:14px; font-weight:600; cursor:pointer; transition:border-color .18s, color .18s; }
+    .btn-back:hover { border-color:var(--green-mid); color:var(--green-mid); }
 
-    .btn-quick {
-      background: var(--green-pale);
-      color: var(--green-deep);
-      box-shadow: 0 4px 14px rgba(46,107,71,.1);
-    }
-    .btn-quick:hover { background: #d4f0e2; box-shadow: 0 8px 24px rgba(46,107,71,.18); }
+    .loading { display:none; align-items:center; gap:10px; padding:12px 0; color:var(--muted); font-size:13px; }
+    .spinner { width:18px; height:18px; border:2.5px solid var(--border); border-top-color:var(--green-mid); border-radius:50%; animation:spin 1s linear infinite; }
+    @keyframes spin { to{transform:rotate(360deg)} }
 
-    .btn-full {
-      background: var(--green-mid);
-      color: #fff;
-      box-shadow: 0 4px 14px rgba(46,107,71,.22);
-    }
-    .btn-full:hover { background: var(--green-deep); box-shadow: 0 8px 24px rgba(46,107,71,.3); }
+    .result-section { display:none; }
+    .urgency-pill { display:inline-block; padding:5px 14px; border-radius:999px; font-size:12px; font-weight:700; letter-spacing:.5px; text-transform:uppercase; margin-bottom:12px; }
+    .urgency-pill.low { background:#e6f7ee; color:var(--green-mid); }
+    .urgency-pill.medium { background:var(--amber-pale); color:#b45309; }
+    .urgency-pill.high { background:var(--red-pale); color:var(--red); }
 
-    .btn-emergency {
-      background: linear-gradient(135deg, #c0392b, #e74c3c);
-      color: #fff;
-      box-shadow: 0 4px 14px rgba(192,57,43,.28);
-    }
-    .btn-emergency:hover { box-shadow: 0 8px 24px rgba(192,57,43,.42); }
-    .btn-emergency .btn-hint { opacity: .85; }
+    .result-block { background:var(--green-pale); border:1px solid var(--border); border-radius:12px; padding:14px; font-size:14px; line-height:1.65; margin-bottom:12px; }
+    .result-block h4 { font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:.5px; color:var(--green-bright); margin-bottom:6px; }
 
-    /* ── FORMS ── */
-    .form-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 14px;
-      margin-bottom: 14px;
-    }
-    @media(max-width:560px){ .form-grid { grid-template-columns: 1fr; } }
+    .hospital-card { border:1.5px dashed var(--border); border-radius:12px; padding:12px 14px; margin-bottom:8px; display:flex; justify-content:space-between; align-items:center; gap:10px; flex-wrap:wrap; background:var(--card); }
+    .hospital-card strong { display:block; font-size:14px; margin-bottom:2px; }
+    .hospital-card span { font-size:13px; color:var(--muted); }
+    .hospital-phone { font-size:14px; font-weight:600; color:var(--green-bright); white-space:nowrap; }
 
-    label {
-      font-size: 12px;
-      font-weight: 600;
-      color: var(--muted);
-      display: block;
-      margin-bottom: 5px;
-      letter-spacing: .2px;
-      text-transform: uppercase;
-    }
-    input, select, textarea {
-      width: 100%;
-      padding: 11px 13px;
-      border-radius: 10px;
-      border: 1.5px solid var(--border);
-      font-family: 'DM Sans', sans-serif;
-      font-size: 14px;
-      background: #fafcfb;
-      color: var(--text);
-      outline: none;
-      transition: border .18s, box-shadow .18s;
-    }
-    textarea { min-height: 100px; resize: vertical; }
-    input:focus, select:focus, textarea:focus {
-      border-color: var(--green-bright);
-      box-shadow: 0 0 0 3px rgba(63,160,106,.15);
-      background: #fff;
-    }
+    .emergency-card { background:var(--red-pale); border:1.5px solid #f5c6c2; border-radius:12px; padding:16px; margin-bottom:12px; }
+    [data-theme="dark"] .emergency-card { border-color:#5a1f1a; }
+    .emergency-card h4 { color:var(--red); font-size:13px; text-transform:uppercase; letter-spacing:.5px; margin-bottom:6px; }
+    .ambulance-number { font-family:'Merriweather',serif; font-size:30px; font-weight:900; color:var(--red); margin:4px 0; }
+    .ambulance-number small { font-size:13px; font-family:'DM Sans',sans-serif; color:var(--muted); display:block; margin-top:2px; }
 
-    .field { margin-bottom: 14px; }
+    /* Chat bubble styles for follow-up conversation */
+    .chat-history { margin-bottom: 14px; }
+    .chat-bubble { padding: 10px 14px; border-radius: 12px; margin-bottom: 8px; font-size: 14px; line-height: 1.55; max-width: 90%; }
+    .chat-bubble.user { background: var(--green-mid); color: #fff; margin-left: auto; border-bottom-right-radius: 4px; }
+    .chat-bubble.ai { background: var(--green-pale); border: 1px solid var(--border); border-bottom-left-radius: 4px; }
+    .chat-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .5px; margin-bottom: 4px; }
+    .chat-label.user { color: var(--green-light); }
+    .chat-label.ai { color: var(--green-bright); }
 
-    .btn-row {
-      display: flex;
-      gap: 10px;
-      margin-top: 18px;
-      flex-wrap: wrap;
-    }
-    .btn-submit {
-      background: var(--green-mid);
-      color: #fff;
-      border: none;
-      border-radius: 999px;
-      padding: 13px 24px;
-      font-family: 'DM Sans', sans-serif;
-      font-size: 14px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: background .18s, transform .15s;
-    }
-    .btn-submit:hover { background: var(--green-deep); transform: translateY(-1px); }
-    .btn-back {
-      background: transparent;
-      color: var(--muted);
-      border: 1.5px solid var(--border);
-      border-radius: 999px;
-      padding: 13px 20px;
-      font-family: 'DM Sans', sans-serif;
-      font-size: 14px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: border-color .18s, color .18s;
-    }
-    .btn-back:hover { border-color: var(--green-mid); color: var(--green-mid); }
+    .helpline-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px; }
+    @media(max-width:500px) { .helpline-grid { grid-template-columns: 1fr; } }
+    .helpline-card { background: var(--red-pale); border: 1px solid #f5c6c2; border-radius: 10px; padding: 12px; text-align: center; }
+    [data-theme="dark"] .helpline-card { border-color: #5a1f1a; }
+    .helpline-number { font-family: 'Merriweather', serif; font-size: 24px; font-weight: 900; color: var(--red); display: block; }
+    .helpline-label { font-size: 11px; color: var(--muted); margin-top: 3px; }
 
-    /* ── LOADING ── */
-    .loading {
-      display: none;
-      align-items: center;
-      gap: 10px;
-      padding: 12px 0;
-      color: var(--muted);
-      font-size: 13px;
-    }
-    .spinner {
-      width: 18px; height: 18px;
-      border: 2.5px solid var(--green-light);
-      border-top-color: var(--green-mid);
-      border-radius: 50%;
-      animation: spin 1s linear infinite;
-    }
-    @keyframes spin { to { transform: rotate(360deg); } }
+    .disclaimer { background:var(--amber-pale); border:1px solid #f5d9b5; border-radius:10px; padding:12px 14px; font-size:12.5px; color:#7c4b10; margin-top:14px; line-height:1.55; }
+    [data-theme="dark"] .disclaimer { border-color:#5a3a1a; color:#d4956a; }
+    .disclaimer strong { display:block; margin-bottom:3px; }
 
-    /* ── RESULT ── */
-    .result-section { display: none; }
+    .footer-notes { background:var(--card); border:1px solid var(--border); border-radius:var(--radius); padding:20px 24px; display:flex; gap:24px; flex-wrap:wrap; margin-bottom:16px; }
+    .footer-note { flex:1; min-width:180px; display:flex; gap:10px; align-items:flex-start; }
+    .footer-note-icon { font-size:20px; flex-shrink:0; }
+    .footer-note p { font-size:13px; color:var(--muted); line-height:1.55; }
+    .footer-note strong { display:block; font-size:13px; font-weight:600; color:var(--text); margin-bottom:3px; }
 
-    .urgency-pill {
-      display: inline-block;
-      padding: 5px 14px;
-      border-radius: 999px;
-      font-size: 12px;
-      font-weight: 700;
-      letter-spacing: .5px;
-      text-transform: uppercase;
-      margin-bottom: 12px;
-    }
-    .urgency-pill.low { background: #e6f7ee; color: var(--green-mid); }
-    .urgency-pill.medium { background: #fef3e8; color: #b45309; }
-    .urgency-pill.high { background: var(--red-pale); color: var(--red); }
+    footer { text-align:center; font-size:12px; color:var(--muted); padding:10px 0 28px; background:var(--footer-bg); }
 
-    .result-block {
-      background: var(--green-pale);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 14px;
-      font-size: 14px;
-      line-height: 1.65;
-      margin-bottom: 12px;
-    }
-    .result-block h4 {
-      font-size: 12px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: .5px;
-      color: var(--green-mid);
-      margin-bottom: 6px;
-    }
-
-    /* ── HOSPITALS ── */
-    .hospital-list { margin-top: 10px; }
-    .hospital-card {
-      border: 1.5px dashed var(--border);
-      border-radius: 12px;
-      padding: 12px 14px;
-      margin-bottom: 8px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 10px;
-      flex-wrap: wrap;
-      background: #fff;
-    }
-    .hospital-card strong { display: block; font-size: 14px; margin-bottom: 2px; }
-    .hospital-card span { font-size: 13px; color: var(--muted); }
-    .hospital-phone {
-      font-size: 14px;
-      font-weight: 600;
-      color: var(--green-mid);
-      white-space: nowrap;
-    }
-
-    /* Emergency result */
-    .emergency-card {
-      background: var(--red-pale);
-      border: 1.5px solid #f5c6c2;
-      border-radius: 12px;
-      padding: 16px;
-      margin-bottom: 12px;
-    }
-    .emergency-card h4 { color: var(--red); font-size: 13px; text-transform: uppercase; letter-spacing: .5px; margin-bottom: 6px; }
-    .ambulance-number {
-      font-family: 'Merriweather', serif;
-      font-size: 30px;
-      font-weight: 900;
-      color: var(--red);
-      margin: 4px 0;
-    }
-    .ambulance-number small { font-size: 14px; font-family: 'DM Sans', sans-serif; color: var(--muted); display: block; margin-top: 2px; }
-
-    /* ── DISCLAIMER + FOOTER NOTES ── */
-    .disclaimer {
-      background: var(--amber-pale);
-      border: 1px solid #f5d9b5;
-      border-radius: 10px;
-      padding: 12px 14px;
-      font-size: 12.5px;
-      color: #7c4b10;
-      margin-top: 14px;
-      line-height: 1.55;
-    }
-    .disclaimer strong { display: block; margin-bottom: 3px; }
-
-    .footer-notes {
-      background: var(--white);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 20px 24px;
-      display: flex;
-      gap: 24px;
-      flex-wrap: wrap;
-      margin-bottom: 16px;
-    }
-    .footer-note {
-      flex: 1;
-      min-width: 180px;
-      display: flex;
-      gap: 10px;
-      align-items: flex-start;
-    }
-    .footer-note-icon {
-      font-size: 20px;
-      flex-shrink: 0;
-    }
-    .footer-note p {
-      font-size: 13px;
-      color: var(--muted);
-      line-height: 1.55;
-    }
-    .footer-note strong {
-      display: block;
-      font-size: 13px;
-      font-weight: 600;
-      color: var(--text);
-      margin-bottom: 3px;
-    }
-
-    footer {
-      text-align: center;
-      font-size: 12px;
-      color: var(--muted);
-      padding: 10px 0 28px;
-    }
+    /* Error box */
+    .error-box { background: var(--red-pale); border: 1px solid #f5c6c2; border-radius: 10px; padding: 14px; color: var(--red); font-size: 14px; margin-bottom: 12px; }
   </style>
 </head>
 <body>
 
-<!-- ── HEADER ── -->
+<button class="theme-toggle" onclick="toggleTheme()" id="themeToggle" aria-label="Toggle dark mode">
+  <span id="toggleIcon">🌙</span>
+  <span style="font-size:12px" id="toggleLabel">Dark Mode</span>
+</button>
+
 <header>
   <div class="header-inner">
-    <div class="header-badge">
-      <span>🌿</span> AI-Powered · Rural Healthcare
-    </div>
-    <h1>Your <em>Health Companion</em><br></h1>
-    <p class="header-desc">
-      Bridging the gap between remote communities and quality healthcare — with instant, free, AI-guided health advice available to anyone, anywhere.
-    </p>
+    <div class="header-badge"><span>🌿</span> AI-Powered · Rural Healthcare</div>
+    <h1><em>Your Health Companion</em></h1>
+    <p class="header-desc">Bridging the gap between remote communities and quality healthcare — with instant, free, AI-guided health advice available to anyone, anywhere.</p>
     <div class="aim-strip">
-      <div class="aim-item">
-        <div class="aim-icon">🎯</div>
-        Accessible health guidance for all
-      </div>
-      <div class="aim-item">
-        <div class="aim-icon">🔒</div>
-        No account or sign-up required
-      </div>
-      <div class="aim-item">
-        <div class="aim-icon">⚡</div>
-        Instant response, 24 × 7
-      </div>
+      <div class="aim-item"><div class="aim-icon">🎯</div> Accessible health guidance for all</div>
+      <div class="aim-item"><div class="aim-icon">🔒</div> No account or sign-up required</div>
+      <div class="aim-item"><div class="aim-icon">⚡</div> Instant response, 24 × 7</div>
     </div>
   </div>
 </header>
 
-<!-- ── ABOUT STRIP ── -->
 <div class="about-strip">
   <div class="about-inner">
     <div class="about-item">
       <div class="about-icon">🌱</div>
-      <div>
-        <h4>Our Aim</h4>
-        <p>Empower underserved rural communities with reliable, easy-to-access health guidance — reducing delays in care caused by distance or lack of information.</p>
-      </div>
+      <div><h4>Our Aim</h4><p>Empower underserved rural communities with reliable health guidance — reducing delays in care caused by distance or lack of information.</p></div>
     </div>
     <div class="about-item">
       <div class="about-icon">🤝</div>
-      <div>
-        <h4>How We Help</h4>
-        <p>From basic symptom checks to locating the nearest hospital and ambulance services — we provide a lifeline when professional help feels far away.</p>
-      </div>
+      <div><h4>How We Help</h4><p>From basic symptom checks to locating the nearest hospital and ambulance services — we provide a lifeline when professional help feels far away.</p></div>
     </div>
     <div class="about-item">
       <div class="about-icon">🛡️</div>
-      <div>
-        <h4>Your Privacy</h4>
-        <p>General assessments require zero personal details. Any information you choose to share is used solely to improve your guidance — never stored or sold.</p>
-      </div>
+      <div><h4>Your Privacy</h4><p>General assessments need zero personal details. Information you share is used only to improve your guidance — never stored or sold.</p></div>
     </div>
   </div>
 </div>
 
-<!-- ── MAIN ── -->
 <main>
 
-  <!-- SERVICE SELECTION -->
+  <!-- ── MODE SELECTION ── -->
   <div id="modeSelection">
     <div class="card">
       <div class="section-label">Get Started</div>
       <h3>How can we help you today?</h3>
-      <p class="card-desc">Choose the type of assistance you need. Hover over each option to learn more before selecting.</p>
-
+      <p class="card-desc">Choose the type of assistance you need. Hover over each option to learn more.</p>
       <div class="service-grid">
-        <button
-          class="service-btn btn-quick"
-          onclick="selectMode('quick')"
-          data-tooltip="Describe your symptoms and receive an instant general health assessment — no name or details needed."
-        >
+        <button class="service-btn btn-quick" onclick="selectMode('quick')" data-tooltip="Describe your symptoms and receive an instant AI health assessment — no name or details needed.">
           <span class="btn-icon">🩺</span>
           <span class="btn-title">Quick Check</span>
           <span class="btn-hint">General symptom assessment — no personal details required</span>
         </button>
-
-        <button
-          class="service-btn btn-full"
-          onclick="selectMode('full')"
-          data-tooltip="Share a few details for a more personalised health discussion, possible causes, and tailored advice."
-        >
+        <button class="service-btn btn-full" onclick="selectMode('full')" data-tooltip="Share a few details for a more personalised AI health discussion, possible causes, and tailored advice.">
           <span class="btn-icon">💬</span>
           <span class="btn-title">Detailed Discussion</span>
           <span class="btn-hint">Personalised guidance based on your age, gender &amp; symptoms</span>
         </button>
-
-        <button
-          class="service-btn btn-emergency"
-          onclick="selectMode('emergency')"
-          data-tooltip="Share your location to instantly receive the ambulance helpline number and nearest hospital list in your area."
-        >
+        <button class="service-btn btn-emergency" onclick="selectMode('emergency')" data-tooltip="Share your location to instantly get the ambulance helpline number and nearest hospitals.">
           <span class="btn-icon">🚨</span>
           <span class="btn-title">Emergency</span>
           <span class="btn-hint">Location only — ambulance number &amp; nearby hospitals immediately</span>
         </button>
       </div>
     </div>
-
-    <!-- FOOTER NOTES shown on landing -->
     <div class="footer-notes">
-      <div class="footer-note">
-        <div class="footer-note-icon">🔓</div>
-        <div>
-          <strong>No personal details needed</strong>
-          <p>Quick Check and Emergency services require no name, age, or contact information for a general assessment.</p>
-        </div>
-      </div>
-      <div class="footer-note">
-        <div class="footer-note-icon">⚕️</div>
-        <div>
-          <strong>Not a replacement for a doctor</strong>
-          <p>This tool provides general guidance only. Always consult a qualified healthcare professional for diagnosis and treatment.</p>
-        </div>
-      </div>
-      <div class="footer-note">
-        <div class="footer-note-icon">📡</div>
-        <div>
-          <strong>Works in low-connectivity areas</strong>
-          <p>Designed to be lightweight and fast so it works even on slow mobile data connections in rural areas.</p>
-        </div>
-      </div>
+      <div class="footer-note"><div class="footer-note-icon">🔓</div><div><strong>No personal details needed</strong><p>Quick Check and Emergency services require no name, age, or contact information.</p></div></div>
+      <div class="footer-note"><div class="footer-note-icon">⚕️</div><div><strong>Not a replacement for a doctor</strong><p>This tool provides general guidance only. Always consult a qualified healthcare professional.</p></div></div>
+      <div class="footer-note"><div class="footer-note-icon">📡</div><div><strong>Works in low-connectivity areas</strong><p>Designed to be lightweight and fast even on slow mobile data connections.</p></div></div>
     </div>
   </div>
 
@@ -649,113 +274,151 @@
   <div class="card" id="quickForm" style="display:none;">
     <div class="section-label">Quick Check</div>
     <h3>Describe Your Symptoms</h3>
-    <p class="card-desc">No personal details required. Simply describe what you or the patient is experiencing and receive an instant general assessment.</p>
-
+    <p class="card-desc">No personal details required. Describe what the patient is experiencing.</p>
     <div class="field">
       <label>Symptoms</label>
       <textarea id="quickSymptoms" placeholder="e.g. fever since two days, headache, mild cough, feeling very tired…"></textarea>
     </div>
-
-    <div class="loading" id="quickLoading">
-      <div class="spinner"></div> Analysing symptoms…
+    <div class="media-section">
+      <div class="media-section-title">📎 Attach Supporting Media <span style="font-weight:400;opacity:.7;font-size:10px;">(optional)</span></div>
+      <div class="media-grid">
+        <div>
+          <label>Photo (wound, rash, report etc.)</label>
+          <div class="upload-zone" id="quickUploadZone">
+            <input type="file" id="quickPhotoInput" accept="image/*,application/pdf" onchange="handleFileSelect('quick', this)">
+            <div class="upload-icon">📷</div>
+            <div class="upload-text">Tap to upload photo</div>
+            <div class="upload-sub">JPG, PNG, PDF · Max 5 MB</div>
+          </div>
+          <div class="upload-preview" id="quickPreview">
+            <img class="preview-img" id="quickPreviewImg" src="" alt="">
+            <span class="preview-name" id="quickPreviewName"></span>
+            <button class="remove-file" onclick="removeFile('quick')">✕</button>
+          </div>
+        </div>
+        <div>
+          <label>Voice Note (describe in your language)</label>
+          <div class="voice-zone" id="quickVoiceZone">
+            <div style="font-size:26px;margin-bottom:8px;">🎙️</div>
+            <button class="voice-btn" id="quickVoiceBtn" onclick="toggleRecording('quick')">● Start Recording</button>
+            <div class="voice-timer" id="quickTimer">0:00</div>
+            <div class="voice-waveform" id="quickWaveform">
+              <div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div>
+            </div>
+            <div class="voice-playback" id="quickPlayback">
+              <audio id="quickAudio" controls></audio>
+              <div class="voice-actions"><button class="voice-action-btn rerecord-btn" onclick="reRecord('quick')">🔄 Re-record</button></div>
+            </div>
+            <div class="voice-sub">Record up to 2 minutes · Any language</div>
+          </div>
+        </div>
+      </div>
     </div>
-
+    <div class="loading" id="quickLoading"><div class="spinner"></div> Analysing symptoms with AI…</div>
     <div class="btn-row">
-      <button class="btn-submit" onclick="analyzeQuick()">Get Assessment</button>
+      <button class="btn-submit" id="quickSubmitBtn" onclick="analyzeQuick()">Get Assessment →</button>
       <button class="btn-back" onclick="goBack()">← Back</button>
     </div>
-
-    <div class="disclaimer">
-      <strong>⚠️ Important Disclaimer</strong>
-      This assessment is for general informational purposes only and is <u>not a substitute for professional medical advice</u>. Please consult a doctor for an accurate diagnosis and treatment plan.
-    </div>
+    <div class="disclaimer"><strong>⚠️ Important Disclaimer</strong> This assessment is for general informational purposes only and is <u>not a substitute for professional medical advice</u>.</div>
   </div>
 
   <!-- ── FULL FORM ── -->
   <div class="card" id="fullForm" style="display:none;">
     <div class="section-label">Detailed Discussion</div>
     <h3>Tell Us More About the Patient</h3>
-    <p class="card-desc">Providing a few extra details helps us give you more tailored guidance. All fields except Symptoms are optional.</p>
-
+    <p class="card-desc">Extra details help the AI give more personalised guidance. All fields except Symptoms are optional.</p>
     <div class="form-grid">
-      <div>
-        <label>Name (optional)</label>
-        <input id="name" placeholder="Enter name">
-      </div>
-      <div>
-        <label>Age (optional)</label>
-        <input id="age" type="number" placeholder="e.g. 34">
-      </div>
+      <div><label>Name (optional)</label><input id="fullName" placeholder="Enter name"></div>
+      <div><label>Age (optional)</label><input id="fullAge" type="number" placeholder="e.g. 34" min="0" max="120"></div>
       <div>
         <label>Gender (optional)</label>
-        <select id="gender">
-          <option value="">Select</option>
-          <option>Male</option>
-          <option>Female</option>
-          <option>Other</option>
-        </select>
+        <select id="fullGender"><option value="">Select</option><option>Male</option><option>Female</option><option>Other</option></select>
       </div>
-      <div>
-        <label>Phone (optional)</label>
-        <input id="phone" placeholder="For follow-up only">
+      <div><label>Phone (optional)</label><input id="fullPhone" placeholder="For follow-up only"></div>
+    </div>
+    <div class="field"><label>Symptoms *</label><textarea id="fullSymptoms" placeholder="Describe all symptoms in detail…"></textarea></div>
+    <div class="field"><label>Location (optional)</label><input id="fullLocation" placeholder="e.g. Bhatpara, North 24 Parganas, West Bengal"></div>
+    <div class="media-section">
+      <div class="media-section-title">📎 Attach Supporting Media <span style="font-weight:400;opacity:.7;font-size:10px;">(optional)</span></div>
+      <div class="media-grid">
+        <div>
+          <label>Photo (wound, rash, prescription, report)</label>
+          <div class="upload-zone" id="fullUploadZone">
+            <input type="file" id="fullPhotoInput" accept="image/*,application/pdf" onchange="handleFileSelect('full', this)">
+            <div class="upload-icon">📷</div>
+            <div class="upload-text">Tap to upload photo</div>
+            <div class="upload-sub">JPG, PNG, PDF · Max 5 MB</div>
+          </div>
+          <div class="upload-preview" id="fullPreview">
+            <img class="preview-img" id="fullPreviewImg" src="" alt="">
+            <span class="preview-name" id="fullPreviewName"></span>
+            <button class="remove-file" onclick="removeFile('full')">✕</button>
+          </div>
+        </div>
+        <div>
+          <label>Voice Note (describe in your language)</label>
+          <div class="voice-zone" id="fullVoiceZone">
+            <div style="font-size:26px;margin-bottom:8px;">🎙️</div>
+            <button class="voice-btn" id="fullVoiceBtn" onclick="toggleRecording('full')">● Start Recording</button>
+            <div class="voice-timer" id="fullTimer">0:00</div>
+            <div class="voice-waveform" id="fullWaveform">
+              <div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div>
+            </div>
+            <div class="voice-playback" id="fullPlayback">
+              <audio id="fullAudio" controls></audio>
+              <div class="voice-actions"><button class="voice-action-btn rerecord-btn" onclick="reRecord('full')">🔄 Re-record</button></div>
+            </div>
+            <div class="voice-sub">Record up to 2 minutes · Any language</div>
+          </div>
+        </div>
       </div>
     </div>
-
-    <div class="field">
-      <label>Symptoms *</label>
-      <textarea id="symptoms" placeholder="Describe all symptoms in detail…"></textarea>
-    </div>
-
-    <div class="field">
-      <label>Location (optional)</label>
-      <input id="location" placeholder="Village, district or city name">
-    </div>
-
-    <div class="loading" id="fullLoading">
-      <div class="spinner"></div> Analysing your details…
-    </div>
-
+    <div class="loading" id="fullLoading"><div class="spinner"></div> Analysing with AI…</div>
     <div class="btn-row">
-      <button class="btn-submit" onclick="analyzeFull()">Get Detailed Guidance</button>
+      <button class="btn-submit" id="fullSubmitBtn" onclick="analyzeFull()">Get Detailed Guidance →</button>
       <button class="btn-back" onclick="goBack()">← Back</button>
     </div>
-
-    <div class="disclaimer">
-      <strong>⚠️ Important Disclaimer</strong>
-      This tool provides general guidance only and is <u>not a replacement for a qualified doctor</u>. Seek immediate professional care if symptoms are severe or worsening.
-    </div>
+    <div class="disclaimer"><strong>⚠️ Important Disclaimer</strong> This tool provides general guidance only and is <u>not a replacement for a qualified doctor</u>.</div>
   </div>
 
   <!-- ── EMERGENCY FORM ── -->
   <div class="card" id="emergencyForm" style="display:none;">
     <div class="section-label" style="color:var(--red);">🚨 Emergency Services</div>
     <h3>Find Immediate Help Near You</h3>
-    <p class="card-desc">Enter your location below — or use your device's GPS — to instantly receive the ambulance helpline number and the closest hospitals in your area. <strong>No other details needed.</strong></p>
-
+    <p class="card-desc">Enter your location or use GPS to instantly get ambulance helplines and nearby hospitals. <strong>No other details needed.</strong></p>
     <div class="field">
       <label>Your Location</label>
-      <input id="emergencyLocation" placeholder="Enter village, town, or city name…">
+      <input id="emergencyLocation" placeholder="e.g. Bhatpara, North 24 Parganas, West Bengal">
     </div>
-
+    <div class="loading" id="emergencyLoading"><div class="spinner"></div> Locating emergency services…</div>
     <div class="btn-row">
-      <button class="btn-submit" style="background:var(--red);" onclick="useGPS()">📍 Use My GPS Location</button>
-      <button class="btn-submit" onclick="analyzeEmergency()">Find Hospitals →</button>
+      <button class="btn-submit" style="background:var(--red);" onclick="useGPS()">📍 Use My GPS</button>
+      <button class="btn-submit" id="emergencySubmitBtn" onclick="analyzeEmergency()">Find Hospitals →</button>
       <button class="btn-back" onclick="goBack()">← Back</button>
-    </div>
-
-    <div class="loading" id="emergencyLoading">
-      <div class="spinner"></div> Locating nearest emergency services…
     </div>
   </div>
 
   <!-- ── RESULT BOX ── -->
   <div class="card result-section" id="resultBox">
-    <div class="section-label">Assessment Result</div>
+    <div class="section-label">Result</div>
     <h3 id="resultTitle">Your Health Assessment</h3>
     <div id="resultContent"></div>
 
-    <div class="btn-row">
-      <button class="btn-submit" onclick="goBack()">← New Assessment</button>
+    <!-- Follow-up chat area (shown after first result) -->
+    <div id="chatSection" style="display:none; margin-top:20px; border-top:1px dashed var(--border); padding-top:16px;">
+      <div class="section-label">💬 Continue the Conversation</div>
+      <p style="font-size:13px; color:var(--muted); margin-bottom:12px;">Have more questions? Ask the AI anything about your condition.</p>
+      <div id="chatHistory" class="chat-history"></div>
+      <div class="field">
+        <textarea id="chatInput" placeholder="e.g. Is it safe to take paracetamol? What should I eat?…" style="min-height:70px;"></textarea>
+      </div>
+      <div class="btn-row">
+        <button class="btn-submit" id="chatSendBtn" onclick="sendChat()">Send →</button>
+      </div>
+    </div>
+
+    <div class="btn-row" style="margin-top:20px;">
+      <button class="btn-submit" onclick="startOver()">← New Assessment</button>
     </div>
   </div>
 
@@ -767,157 +430,471 @@
 </footer>
 
 <script>
-  const demoHospitals = [
-    { name: 'District Government Hospital', distance: '2.1 km', phone: '01234 567890', type: 'Government' },
-    { name: 'Community Health Centre', distance: '3.8 km', phone: '01234 111222', type: 'CHC' },
-    { name: 'Primary Health Centre', distance: '5.2 km', phone: '01234 333444', type: 'PHC' }
-  ];
+/* ── THEME ── */
+const THEME_KEY = 'rhn_theme';
+function applyTheme(theme) {
+  document.documentElement.setAttribute('data-theme', theme);
+  document.getElementById('toggleIcon').textContent  = theme === 'dark' ? '☀️' : '🌙';
+  document.getElementById('toggleLabel').textContent = theme === 'dark' ? 'Light Mode' : 'Dark Mode';
+}
+function toggleTheme() {
+  const next = document.documentElement.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+  localStorage.setItem(THEME_KEY, next); applyTheme(next);
+}
+(function(){ applyTheme(localStorage.getItem(THEME_KEY) || 'light'); })();
 
-  function selectMode(mode) {
-    document.getElementById('modeSelection').style.display = 'none';
-    document.getElementById('quickForm').style.display = 'none';
-    document.getElementById('fullForm').style.display = 'none';
-    document.getElementById('emergencyForm').style.display = 'none';
-    document.getElementById('resultBox').style.display = 'none';
+/* ── STATE ── */
+// FIX: conversationHistory is properly declared here (was commented out before)
+let conversationHistory = [];
+let currentSessionId    = null;
+let currentMode         = null;
+let fullPatientData     = {};  // stores age/gender/location for follow-up calls
 
-    if (mode === 'quick') document.getElementById('quickForm').style.display = 'block';
-    else if (mode === 'full') document.getElementById('fullForm').style.display = 'block';
-    else if (mode === 'emergency') document.getElementById('emergencyForm').style.display = 'block';
+/* ── NAVIGATION ── */
+function selectMode(mode) {
+  currentMode = mode;
+  conversationHistory = [];
+  currentSessionId    = null;
+  ['modeSelection','quickForm','fullForm','emergencyForm','resultBox'].forEach(id => {
+    document.getElementById(id).style.display = 'none';
+  });
+  const map = { quick:'quickForm', full:'fullForm', emergency:'emergencyForm' };
+  document.getElementById(map[mode]).style.display = 'block';
+  window.scrollTo({ top:0, behavior:'smooth' });
+}
 
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+function goBack() {
+  ['quickForm','fullForm','emergencyForm','resultBox'].forEach(id => {
+    document.getElementById(id).style.display = 'none';
+  });
+  document.getElementById('modeSelection').style.display = 'block';
+  window.scrollTo({ top:0, behavior:'smooth' });
+}
+
+function startOver() {
+  conversationHistory = [];
+  currentSessionId    = null;
+  fullPatientData     = {};
+  document.getElementById('chatHistory').innerHTML = '';
+  document.getElementById('chatSection').style.display = 'none';
+  goBack();
+}
+
+/* ── PHOTO UPLOAD ── */
+const selectedFiles = { quick: null, full: null };
+function handleFileSelect(mode, input) {
+  const file = input.files[0];
+  if (!file) return;
+  if (file.size > 5 * 1024 * 1024) { alert('File too large. Max 5 MB.'); input.value = ''; return; }
+  selectedFiles[mode] = file;
+  const previewName = document.getElementById(mode + 'PreviewName');
+  const previewImg  = document.getElementById(mode + 'PreviewImg');
+  previewName.textContent = file.name;
+  document.getElementById(mode + 'Preview').classList.add('show');
+  if (file.type.startsWith('image/')) {
+    const reader = new FileReader();
+    reader.onload = e => { previewImg.src = e.target.result; previewImg.style.display = 'block'; };
+    reader.readAsDataURL(file);
+  } else {
+    previewImg.style.display = 'none';
   }
+}
+function removeFile(mode) {
+  selectedFiles[mode] = null;
+  document.getElementById(mode + 'PhotoInput').value = '';
+  document.getElementById(mode + 'Preview').classList.remove('show');
+}
+['quickUploadZone','fullUploadZone'].forEach(id => {
+  const zone = document.getElementById(id);
+  zone.addEventListener('dragover', e => { e.preventDefault(); zone.classList.add('drag-over'); });
+  zone.addEventListener('dragleave', () => zone.classList.remove('drag-over'));
+  zone.addEventListener('drop', e => {
+    e.preventDefault(); zone.classList.remove('drag-over');
+    const mode  = id.startsWith('quick') ? 'quick' : 'full';
+    const input = document.getElementById(mode + 'PhotoInput');
+    if (e.dataTransfer.files.length) {
+      const dt = new DataTransfer(); dt.items.add(e.dataTransfer.files[0]);
+      input.files = dt.files; handleFileSelect(mode, input);
+    }
+  });
+});
 
-  function goBack() {
-    document.getElementById('modeSelection').style.display = 'block';
-    document.getElementById('quickForm').style.display = 'none';
-    document.getElementById('fullForm').style.display = 'none';
-    document.getElementById('emergencyForm').style.display = 'none';
-    document.getElementById('resultBox').style.display = 'none';
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }
+/* ── VOICE RECORDER ── */
+const recorderState = {
+  quick: { mediaRecorder:null, chunks:[], stream:null, timerInterval:null, seconds:0, blob:null, recording:false },
+  full:  { mediaRecorder:null, chunks:[], stream:null, timerInterval:null, seconds:0, blob:null, recording:false }
+};
+async function toggleRecording(mode) {
+  recorderState[mode].recording ? stopRecording(mode) : await startRecording(mode);
+}
+async function startRecording(mode) {
+  const state = recorderState[mode];
+  try { state.stream = await navigator.mediaDevices.getUserMedia({ audio: true }); }
+  catch(e) { alert('Microphone access denied. Please allow microphone in your browser settings.'); return; }
+  state.chunks = []; state.seconds = 0; state.recording = true;
+  state.mediaRecorder = new MediaRecorder(state.stream);
+  state.mediaRecorder.ondataavailable = e => { if (e.data.size > 0) state.chunks.push(e.data); };
+  state.mediaRecorder.onstop = () => finishRecording(mode);
+  state.mediaRecorder.start();
+  const btn = document.getElementById(mode + 'VoiceBtn');
+  btn.textContent = '■ Stop Recording'; btn.classList.add('stop');
+  document.getElementById(mode + 'VoiceZone').classList.add('recording');
+  document.getElementById(mode + 'Timer').style.display = 'block';
+  document.getElementById(mode + 'Waveform').classList.add('active');
+  document.getElementById(mode + 'Playback').classList.remove('show');
+  state.timerInterval = setInterval(() => {
+    state.seconds++;
+    const m = Math.floor(state.seconds / 60), s = state.seconds % 60;
+    document.getElementById(mode + 'Timer').textContent = `${m}:${s.toString().padStart(2,'0')}`;
+    if (state.seconds >= 120) stopRecording(mode);
+  }, 1000);
+}
+function stopRecording(mode) {
+  const state = recorderState[mode];
+  if (!state.recording) return;
+  clearInterval(state.timerInterval); state.recording = false;
+  state.mediaRecorder.stop(); state.stream.getTracks().forEach(t => t.stop());
+  const btn = document.getElementById(mode + 'VoiceBtn');
+  btn.textContent = '● Start Recording'; btn.classList.remove('stop');
+  document.getElementById(mode + 'VoiceZone').classList.remove('recording');
+  document.getElementById(mode + 'Waveform').classList.remove('active');
+}
+function finishRecording(mode) {
+  const state = recorderState[mode];
+  state.blob  = new Blob(state.chunks, { type: 'audio/webm' });
+  const url   = URL.createObjectURL(state.blob);
+  document.getElementById(mode + 'Audio').src = url;
+  document.getElementById(mode + 'Playback').classList.add('show');
+  document.getElementById(mode + 'Timer').style.display = 'none';
+}
+function reRecord(mode) {
+  recorderState[mode].blob = null;
+  document.getElementById(mode + 'Playback').classList.remove('show');
+  document.getElementById(mode + 'Timer').textContent = '0:00';
+  document.getElementById(mode + 'Timer').style.display = 'none';
+}
 
-  function useGPS() {
-    if (!navigator.geolocation) { alert('GPS not supported on this device.'); return; }
-    navigator.geolocation.getCurrentPosition(
-      pos => {
-        const { latitude, longitude } = pos.coords;
-        document.getElementById('emergencyLocation').value = `${latitude.toFixed(5)}, ${longitude.toFixed(5)}`;
-      },
-      () => alert('Unable to fetch GPS location. Please enter manually.')
-    );
-  }
+/* ── HELPERS ── */
+function setLoading(id, btnId, isLoading, btnText = 'Get Assessment →') {
+  const loadEl = document.getElementById(id);
+  const btnEl  = document.getElementById(btnId);
+  loadEl.style.display = isLoading ? 'flex' : 'none';
+  if (btnEl) { btnEl.disabled = isLoading; btnEl.textContent = isLoading ? 'Please wait…' : btnText; }
+}
 
-  async function analyzeQuick() {
-    const symptoms = document.getElementById('quickSymptoms').value.trim();
-    if (!symptoms) { alert('Please describe your symptoms.'); return; }
+function urgencyPill(level) {
+  const labels = { low:'✅ LOW URGENCY', medium:'⚠ MEDIUM URGENCY', high:'🚨 HIGH URGENCY' };
+  return `<span class="urgency-pill ${level || 'medium'}">${labels[level] || '⚠ MEDIUM URGENCY'}</span>`;
+}
 
-    document.getElementById('quickLoading').style.display = 'flex';
-    await fakeDelay(1400);
-    document.getElementById('quickLoading').style.display = 'none';
-
-    showResult('quick', { symptoms });
-  }
-
-  async function analyzeFull() {
-    const symptoms = document.getElementById('symptoms').value.trim();
-    if (!symptoms) { alert('Please describe the symptoms.'); return; }
-
-    document.getElementById('fullLoading').style.display = 'flex';
-    await fakeDelay(1600);
-    document.getElementById('fullLoading').style.display = 'none';
-
-    const age = document.getElementById('age').value;
-    const gender = document.getElementById('gender').value;
-    showResult('full', { symptoms, age, gender });
-  }
-
-  async function analyzeEmergency() {
-    const loc = document.getElementById('emergencyLocation').value.trim();
-    if (!loc) { alert('Please enter your location or use GPS.'); return; }
-
-    document.getElementById('emergencyLoading').style.display = 'flex';
-    await fakeDelay(1200);
-    document.getElementById('emergencyLoading').style.display = 'none';
-
-    showResult('emergency', { location: loc });
-  }
-
-  function fakeDelay(ms) { return new Promise(r => setTimeout(r, ms)); }
-
-  function hospitalCards(list) {
-    return list.map(h => `
-      <div class="hospital-card">
-        <div>
-          <strong>${h.name}</strong>
-          <span>📍 ${h.distance} &nbsp;·&nbsp; ${h.type}</span>
-        </div>
-        <div class="hospital-phone">📞 ${h.phone}</div>
+function hospitalCards(list) {
+  if (!list || !list.length) return '<p style="color:var(--muted);font-size:13px;">No hospital records found for this location. Please call 108 for ambulance.</p>';
+  return list.map(h => `
+    <div class="hospital-card">
+      <div>
+        <strong>${h.name}</strong>
+        <span>${h.type || ''} ${h.address ? '· ' + h.address : ''}</span>
       </div>
-    `).join('');
-  }
+      <div class="hospital-phone">📞 ${h.phone || 'N/A'}</div>
+    </div>
+  `).join('');
+}
 
-  function showResult(mode, data) {
-    document.getElementById('quickForm').style.display = 'none';
-    document.getElementById('fullForm').style.display = 'none';
-    document.getElementById('emergencyForm').style.display = 'none';
+/* ── QUICK CHECK ── */
+async function analyzeQuick() {
+  const symptoms = document.getElementById('quickSymptoms').value.trim();
+  if (!symptoms) { alert('Please describe your symptoms.'); return; }
 
-    const box = document.getElementById('resultBox');
-    const content = document.getElementById('resultContent');
-    const title = document.getElementById('resultTitle');
-    box.style.display = 'block';
+  setLoading('quickLoading', 'quickSubmitBtn', true, 'Get Assessment →');
+  try {
+    const res  = await fetch('api/quick.php', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ symptoms, history: conversationHistory, session_id: currentSessionId })
+    });
+    const data = await res.json();
+    setLoading('quickLoading', 'quickSubmitBtn', false, 'Get Assessment →');
 
-    if (mode === 'emergency') {
-      title.textContent = 'Emergency Services Near You';
-      content.innerHTML = `
-        <div class="emergency-card">
-          <h4>🚑 National Ambulance Helpline</h4>
-          <div class="ambulance-number">102 &nbsp;/&nbsp; 108
-            <small>Call immediately for life-threatening emergencies</small>
-          </div>
-        </div>
-        <div class="section-label" style="margin-top:16px;">Nearby Hospitals &amp; Health Centres</div>
-        <div class="hospital-list">${hospitalCards(demoHospitals)}</div>
-        <div class="disclaimer" style="margin-top:14px;">
-          <strong>⚠️ If this is a life-threatening emergency, call 112 or 108 immediately.</strong>
-          Hospital distances shown are approximate and may vary. Always call ahead to confirm availability.
-        </div>
-      `;
+    if (data.error) { showError(data.error); return; }
+    currentSessionId    = data.session_id;
+    conversationHistory = data.history;
+
+    if (data.result.needs_more_info) {
+      showFollowUpQuestions(data.result.questions, 'quick');
     } else {
-      const urgency = 'medium';
-      const sympText = data.symptoms;
-      const detail = data.age ? ` (Age: ${data.age}${data.gender ? ', ' + data.gender : ''})` : '';
-      title.textContent = mode === 'full' ? 'Detailed Health Guidance' : 'Quick Assessment Result';
+      showAssessmentResult(data.result, 'quick');
+    }
+  } catch(e) {
+    setLoading('quickLoading', 'quickSubmitBtn', false, 'Get Assessment →');
+    showError('Could not connect to the server. Please check that XAMPP is running.');
+  }
+}
 
-      content.innerHTML = `
-        <span class="urgency-pill ${urgency}">⚠ ${urgency.toUpperCase()} URGENCY</span>
+/* ── DETAILED DISCUSSION ── */
+async function analyzeFull() {
+  const symptoms = document.getElementById('fullSymptoms').value.trim();
+  if (!symptoms) { alert('Please describe the symptoms.'); return; }
 
-        <div class="result-block">
-          <h4>Symptoms Noted</h4>
-          ${sympText}${detail}
-        </div>
+  // Save patient data for multi-turn follow-ups
+  fullPatientData = {
+    age:      document.getElementById('fullAge').value.trim(),
+    gender:   document.getElementById('fullGender').value,
+    location: document.getElementById('fullLocation').value.trim(),
+    name:     document.getElementById('fullName').value.trim()
+  };
 
-        <div class="result-block">
-          <h4>Possible Cause</h4>
-          Based on the symptoms described, a common possibility includes viral infection or flu-like illness. Other causes may involve seasonal allergies or mild bacterial infection.
-        </div>
+  setLoading('fullLoading', 'fullSubmitBtn', true, 'Get Detailed Guidance →');
+  try {
+    const res  = await fetch('api/full.php', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        symptoms,
+        history:    conversationHistory,
+        session_id: currentSessionId,
+        ...fullPatientData
+      })
+    });
+    const data = await res.json();
+    setLoading('fullLoading', 'fullSubmitBtn', false, 'Get Detailed Guidance →');
 
-        <div class="result-block">
-          <h4>Recommended Action</h4>
-          Stay well-hydrated, take adequate rest, and monitor your temperature. If symptoms persist beyond 2–3 days or worsen significantly — especially if you develop difficulty breathing, chest pain, or a very high fever — please seek medical attention promptly.
-        </div>
+    if (data.error) { showError(data.error); return; }
+    currentSessionId    = data.session_id;
+    conversationHistory = data.history;
 
-        <div class="section-label" style="margin-top:16px;">Nearby Health Facilities</div>
-        <div class="hospital-list">${hospitalCards(demoHospitals)}</div>
+    if (data.result.needs_more_info) {
+      showFollowUpQuestions(data.result.questions, 'full');
+    } else {
+      showAssessmentResult(data.result, 'full');
+    }
+  } catch(e) {
+    setLoading('fullLoading', 'fullSubmitBtn', false, 'Get Detailed Guidance →');
+    showError('Could not connect to the server. Please check that XAMPP is running.');
+  }
+}
 
-        <div class="disclaimer">
-          <strong>⚠️ Disclaimer</strong>
-          This is a general AI-generated assessment for informational purposes only. It does <u>not</u> constitute medical advice and is <u>not a replacement for a qualified doctor</u>. Always consult a licensed healthcare professional for proper diagnosis and treatment.
-        </div>
-      `;
+/* ── EMERGENCY ── */
+async function analyzeEmergency() {
+  const location = document.getElementById('emergencyLocation').value.trim();
+  if (!location) { alert('Please enter your location or use GPS.'); return; }
+
+  setLoading('emergencyLoading', 'emergencySubmitBtn', true, 'Find Hospitals →');
+  try {
+    const res  = await fetch('api/emergency.php', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ location, session_id: currentSessionId })
+    });
+    const data = await res.json();
+    setLoading('emergencyLoading', 'emergencySubmitBtn', false, 'Find Hospitals →');
+
+    if (data.error) { showError(data.error); return; }
+    currentSessionId = data.session_id;
+    showEmergencyResult(data);
+  } catch(e) {
+    setLoading('emergencyLoading', 'emergencySubmitBtn', false, 'Find Hospitals →');
+    showError('Could not connect to the server. Please check that XAMPP is running.');
+  }
+}
+
+function useGPS() {
+  if (!navigator.geolocation) { alert('GPS not supported on this device.'); return; }
+  navigator.geolocation.getCurrentPosition(
+    pos => {
+      const { latitude, longitude } = pos.coords;
+      document.getElementById('emergencyLocation').value = `${latitude.toFixed(5)}, ${longitude.toFixed(5)}`;
+    },
+    () => alert('Unable to fetch GPS location. Please enter manually.')
+  );
+}
+
+/* ── FOLLOW-UP QUESTIONS (when AI needs more info) ── */
+function showFollowUpQuestions(questions, mode) {
+  document.getElementById(mode === 'quick' ? 'quickForm' : 'fullForm').style.display = 'none';
+  const box     = document.getElementById('resultBox');
+  const content = document.getElementById('resultContent');
+  const title   = document.getElementById('resultTitle');
+  box.style.display = 'block';
+  title.textContent = 'A few quick questions';
+  document.getElementById('chatSection').style.display = 'none';
+
+  content.innerHTML = `
+    <div class="result-block">
+      <h4>The AI needs a bit more information</h4>
+      <ul style="margin-top:8px;padding-left:18px;">
+        ${questions.map(q => `<li style="margin-bottom:6px;">${q}</li>`).join('')}
+      </ul>
+    </div>
+    <div class="field" style="margin-top:14px;">
+      <label>Your Answers</label>
+      <textarea id="followUpAnswer" placeholder="Type your answers here…"></textarea>
+    </div>
+    <div class="btn-row">
+      <button class="btn-submit" id="followUpSendBtn" onclick="sendFollowUp('${mode}')">Send Answers →</button>
+      <button class="btn-back" onclick="goBack()">← Back</button>
+    </div>
+  `;
+  window.scrollTo({ top:0, behavior:'smooth' });
+}
+
+async function sendFollowUp(mode) {
+  const answer = document.getElementById('followUpAnswer').value.trim();
+  if (!answer) return;
+
+  conversationHistory.push({ role: 'user', content: answer });
+
+  const btn = document.getElementById('followUpSendBtn');
+  btn.disabled = true; btn.textContent = 'Please wait…';
+
+  try {
+    const endpoint = mode === 'full' ? 'api/full.php' : 'api/quick.php';
+    const body     = mode === 'full'
+      ? { symptoms: answer, history: conversationHistory, session_id: currentSessionId, ...fullPatientData }
+      : { symptoms: answer, history: conversationHistory, session_id: currentSessionId };
+
+    const res  = await fetch(endpoint, { method:'POST', headers:{ 'Content-Type':'application/json' }, body: JSON.stringify(body) });
+    const data = await res.json();
+
+    currentSessionId    = data.session_id;
+    conversationHistory = data.history;
+
+    if (data.result.needs_more_info) {
+      showFollowUpQuestions(data.result.questions, mode);
+    } else {
+      showAssessmentResult(data.result, mode);
+    }
+  } catch(e) {
+    btn.disabled = false; btn.textContent = 'Send Answers →';
+    showError('Connection error. Please try again.');
+  }
+}
+
+/* ── SHOW ASSESSMENT RESULT ── */
+function showAssessmentResult(result, mode) {
+  ['quickForm','fullForm','emergencyForm'].forEach(id => document.getElementById(id).style.display = 'none');
+  const box     = document.getElementById('resultBox');
+  const content = document.getElementById('resultContent');
+  const title   = document.getElementById('resultTitle');
+  box.style.display = 'block';
+  title.textContent = mode === 'full' ? 'Detailed Health Guidance' : 'Quick Assessment Result';
+
+  const specialist = result.specialist_type ? `<div class="result-block"><h4>Recommended Specialist</h4>${result.specialist_type}</div>` : '';
+
+  content.innerHTML = `
+    ${urgencyPill(result.urgency)}
+    <div class="result-block"><h4>Possible Causes</h4>${result.possible_causes || 'Not determined'}</div>
+    <div class="result-block"><h4>Recommended Action</h4>${result.recommended_action || 'Please consult a doctor.'}</div>
+    <div class="result-block"><h4>Safe Home Remedies</h4>${result.safe_home_remedies || 'Stay hydrated and get rest.'}</div>
+    <div class="result-block" style="background:var(--red-pale);border-color:#f5c6c2;"><h4 style="color:var(--red);">When to See a Doctor Immediately</h4>${result.when_to_see_doctor || 'If symptoms worsen, go to hospital.'}</div>
+    ${specialist}
+    <div class="disclaimer"><strong>⚠️ Disclaimer</strong> This is a general AI-generated assessment for informational purposes only. It does <u>not</u> constitute medical advice. Always consult a licensed healthcare professional for proper diagnosis and treatment.</div>
+  `;
+
+  // Show the follow-up chat section
+  document.getElementById('chatSection').style.display = 'block';
+  document.getElementById('chatHistory').innerHTML = '';
+  window.scrollTo({ top:0, behavior:'smooth' });
+}
+
+/* ── SHOW EMERGENCY RESULT ── */
+function showEmergencyResult(data) {
+  ['quickForm','fullForm','emergencyForm'].forEach(id => document.getElementById(id).style.display = 'none');
+  const box     = document.getElementById('resultBox');
+  const content = document.getElementById('resultContent');
+  box.style.display = 'block';
+  document.getElementById('resultTitle').textContent = 'Emergency Services Near You';
+  document.getElementById('chatSection').style.display = 'none';
+
+  const helplineHTML = (data.helplines || []).map(h => `
+    <div class="helpline-card">
+      <span class="helpline-number">${h.number}</span>
+      <div class="helpline-label">${h.label}</div>
+    </div>
+  `).join('');
+
+  content.innerHTML = `
+    <div class="emergency-card">
+      <h4>🚑 Call Immediately</h4>
+      <div class="ambulance-number">112 / 108<small>National Emergency · Free Ambulance 24×7</small></div>
+    </div>
+    <div class="section-label" style="margin-top:16px;">All Helpline Numbers</div>
+    <div class="helpline-grid">${helplineHTML}</div>
+    <div class="section-label" style="margin-top:16px;">Nearby Hospitals &amp; Health Centres</div>
+    ${hospitalCards(data.hospitals)}
+    <div class="disclaimer" style="margin-top:14px;">
+      <strong>⚠️ Life-threatening emergency? Call 112 immediately.</strong><br>
+      ${data.note || 'Always call ahead to confirm hospital availability.'}
+    </div>
+  `;
+  window.scrollTo({ top:0, behavior:'smooth' });
+}
+
+/* ── SHOW ERROR ── */
+function showError(message) {
+  const content = document.getElementById('resultContent');
+  const box     = document.getElementById('resultBox');
+  box.style.display = 'block';
+  document.getElementById('resultTitle').textContent = 'Something went wrong';
+  document.getElementById('chatSection').style.display = 'none';
+  content.innerHTML = `<div class="error-box">❌ ${message}</div>`;
+  window.scrollTo({ top:0, behavior:'smooth' });
+}
+
+/* ── FOLLOW-UP CHAT (after result is shown) ── */
+async function sendChat() {
+  const input   = document.getElementById('chatInput');
+  const message = input.value.trim();
+  if (!message) return;
+
+  const chatBtn = document.getElementById('chatSendBtn');
+  chatBtn.disabled = true; chatBtn.textContent = 'Sending…';
+
+  // Show user bubble
+  addChatBubble(message, 'user');
+  input.value = '';
+
+  conversationHistory.push({ role: 'user', content: message });
+
+  try {
+    const endpoint = currentMode === 'full' ? 'api/full.php' : 'api/quick.php';
+    const body     = currentMode === 'full'
+      ? { symptoms: message, history: conversationHistory, session_id: currentSessionId, ...fullPatientData }
+      : { symptoms: message, history: conversationHistory, session_id: currentSessionId };
+
+    const res  = await fetch(endpoint, { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(body) });
+    const data = await res.json();
+
+    conversationHistory = data.history;
+
+    // Extract readable reply from AI JSON result
+    let aiReply = '';
+    if (data.result) {
+      if (data.result.needs_more_info) {
+        aiReply = 'I need a bit more information:\n' + (data.result.questions || []).join('\n');
+      } else {
+        aiReply = (data.result.recommended_action || '') +
+          (data.result.possible_causes ? '\n\nPossible causes: ' + data.result.possible_causes : '');
+      }
     }
 
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    addChatBubble(aiReply || 'Please consult a doctor for this question.', 'ai');
+    chatBtn.disabled = false; chatBtn.textContent = 'Send →';
+  } catch(e) {
+    addChatBubble('Sorry, connection error. Please try again.', 'ai');
+    chatBtn.disabled = false; chatBtn.textContent = 'Send →';
   }
+}
+
+function addChatBubble(text, role) {
+  const history = document.getElementById('chatHistory');
+  const wrap    = document.createElement('div');
+  wrap.innerHTML = `
+    <div class="chat-label ${role}">${role === 'user' ? 'You' : 'AI Health Advisor'}</div>
+    <div class="chat-bubble ${role}">${text.replace(/\n/g, '<br>')}</div>
+  `;
+  history.appendChild(wrap);
+  history.scrollTop = history.scrollHeight;
+}
 </script>
 </body>
 </html>
